@@ -36,6 +36,16 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
+      body:
+          _Header(), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class _Header extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: Align(
         alignment: Alignment.topLeft,
         child: Column(
@@ -57,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
             )
           ],
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
