@@ -33,31 +33,31 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Align(
-          alignment: Alignment.topLeft,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: Text(
-                  'Teacher profile',
-                  style: Theme.of(context).textTheme.headline5,
-                ),
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Align(
+        alignment: Alignment.topLeft,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                'Teacher profile',
+                style: Theme.of(context).textTheme.headline5,
               ),
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: Text(
-                  'Which grades & subjects you teach',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-              )
-            ],
-          ),
-        ) // This trailing comma makes auto-formatting nicer for build methods.
-        );
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                'Which grades & subjects you teach',
+                style: Theme.of(context).textTheme.headline4,
+              ),
+            )
+          ],
+        ),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
   }
 }
