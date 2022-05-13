@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,11 +10,9 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -30,102 +31,90 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        floatingActionButton:  FloatingActionButton.extended(onPressed: (){}, label: Text('SUBMIT'),),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        body:
-            _Header() //_Header(), // This trailing comma makes auto-formatting nicer for build methods.
-        );
+  List _items = [];
+
+  // Fetch content from the json file
+  Future<void> readJson() async {
+    final String response = await rootBundle.loadString('assets/response.json');
+    final data = await json.decode(response);
+    setState(() {
+      _items = data["classess"];
+    });
   }
-}
 
-class _Header extends StatelessWidget {
-  var androidVersionNames = [
-    "Cupcake",
-    "Donut",
-    "Eclair",
-    "Froyo",
-    "Gingerbread",
-    "Honeycomb",
-    "Ice Cream Sandwich",
-    "Jellybean",
-    "Kitkat",
-    "Lollipop",
-    "Marshmallow",
-    "Nougat",
-    "Oreo",
-    "Pie",
-    "Cupcake",
-    "Donut",
-    "Eclair",
-    "Froyo",
-    "Gingerbread",
-    "Honeycomb",
-    "Ice Cream Sandwich",
-    "Jellybean",
-    "Kitkat",
-    "Lollipop",
-    "Marshmallow",
-    "Nougat",
-    "Oreo",
-    "Pie",
-    "Cupcake",
-    "Donut",
-    "Eclair",
-    "Froyo",
-    "Gingerbread",
-    "Honeycomb",
-    "Ice Cream Sandwich",
-    "Jellybean",
-    "Kitkat",
-    "Lollipop",
-    "Marshmallow",
-    "Nougat",
-    "Oreo",
-    "Pie"
-  ];
+  @override
+  void initState() {
+    super.initState();
+    readJson();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Align(
-        alignment: Alignment.topLeft,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Teacher profile',
-                    style: Theme.of(context).textTheme.headline5,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {},
+        label: const Text('SUBMIT'),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: Scaffold(
+        body: SafeArea(
+            child: Align(
+          alignment: Alignment.topLeft,
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Teacher profile',
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 12)),
+                      Text(
+                        'Which grades & subjects you teach',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ],
                   ),
-                  const Padding(padding: EdgeInsets.only(top: 12)),
-                  Text(
-                    'Which grades & subjects you teach',
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                ],
-              ),
+                ),
+                Expanded(
+                    child: ListView.builder(
+                  itemBuilder: (context, position) {
+                    return Column(
+                      children: [
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: Container(
+                            color: Colors.white10,
+                            child: Text(_items[position]["standard"]),
+                          ),
+                        ),
+                        Container(
+                          height: 200,
+                          child: ListView.builder(
+                            itemBuilder: (context, index) {
+                              return Text(_items[position]["subjects"][index]
+                                  ["subject_name"]);
+                            },
+                            itemCount: _items[position]["subjects"].length,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                          ),
+                        )
+                      ],
+                    );
+                  },
+                  itemCount: _items.length,
+                )),
+              ],
             ),
-            Expanded(
-                child: ListView.builder(
-              itemBuilder: (context, position) {
-                return Column(
-                  children: [Text(androidVersionNames[position])],
-                );
-              },
-              itemCount: androidVersionNames.length,
-            )),
-          ],
-        ),
+          ),
+        )),
       ),
     );
   }
