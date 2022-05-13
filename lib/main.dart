@@ -33,16 +33,63 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body:
-          _Header(), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        floatingActionButton:  FloatingActionButton.extended(onPressed: (){}, label: Text('SUBMIT'),),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        body:
+            _Header() //_Header(), // This trailing comma makes auto-formatting nicer for build methods.
+        );
   }
 }
 
 class _Header extends StatelessWidget {
+  var androidVersionNames = [
+    "Cupcake",
+    "Donut",
+    "Eclair",
+    "Froyo",
+    "Gingerbread",
+    "Honeycomb",
+    "Ice Cream Sandwich",
+    "Jellybean",
+    "Kitkat",
+    "Lollipop",
+    "Marshmallow",
+    "Nougat",
+    "Oreo",
+    "Pie",
+    "Cupcake",
+    "Donut",
+    "Eclair",
+    "Froyo",
+    "Gingerbread",
+    "Honeycomb",
+    "Ice Cream Sandwich",
+    "Jellybean",
+    "Kitkat",
+    "Lollipop",
+    "Marshmallow",
+    "Nougat",
+    "Oreo",
+    "Pie",
+    "Cupcake",
+    "Donut",
+    "Eclair",
+    "Froyo",
+    "Gingerbread",
+    "Honeycomb",
+    "Ice Cream Sandwich",
+    "Jellybean",
+    "Kitkat",
+    "Lollipop",
+    "Marshmallow",
+    "Nougat",
+    "Oreo",
+    "Pie"
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,18 +100,30 @@ class _Header extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(12),
-              child: Text(
-                'Teacher profile',
-                style: Theme.of(context).textTheme.headline5,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Teacher profile',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 12)),
+                  Text(
+                    'Which grades & subjects you teach',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: Text(
-                'Which grades & subjects you teach',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-            )
+            Expanded(
+                child: ListView.builder(
+              itemBuilder: (context, position) {
+                return Column(
+                  children: [Text(androidVersionNames[position])],
+                );
+              },
+              itemCount: androidVersionNames.length,
+            )),
           ],
         ),
       ),
