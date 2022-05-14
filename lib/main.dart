@@ -32,6 +32,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List _items = [];
+  bool isChecked = false;
 
   // Fetch content from the json file
   Future<void> readJson() async {
@@ -58,63 +59,115 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Scaffold(
         body: SafeArea(
-            child: Align(
-          alignment: Alignment.topLeft,
-          child: Container(
-            color: Colors.white,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Teacher profile',
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                      const Padding(padding: EdgeInsets.only(top: 12)),
-                      Text(
-                        'Which grades & subjects you teach',
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                    child: ListView.builder(
-                  itemBuilder: (context, position) {
-                    return Column(
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Container(
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        AspectRatio(
-                          aspectRatio: 1,
-                          child: Container(
-                            color: Colors.white10,
-                            child: Text(_items[position]["standard"]),
-                          ),
+                        Text(
+                          'Teacher profile',
+                          style: Theme.of(context).textTheme.headline5,
                         ),
-                        Container(
-                          height: 200,
-                          child: ListView.builder(
-                            itemBuilder: (context, index) {
-                              return Text(_items[position]["subjects"][index]
-                                  ["subject_name"]);
-                            },
-                            itemCount: _items[position]["subjects"].length,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                          ),
-                        )
+                        const Padding(padding: EdgeInsets.only(top: 12)),
+                        Text(
+                          'Which grades & subjects you teach',
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
                       ],
-                    );
-                  },
-                  itemCount: _items.length,
-                )),
-              ],
+                    ),
+                  ),
+                  Expanded(
+                      child: ListView.builder(
+                    itemBuilder: (context, position) {
+                      return Column(
+                        children: [
+                          AspectRatio(
+                            aspectRatio: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox.square(
+                                  dimension: 50,
+                                  child: Card(
+                                    color: Colors.black,
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          _items[position]["standard"],
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 200,
+                                  child: ListView.builder(
+                                    itemBuilder: (context, index) {
+                                      return Card(
+                                        elevation: 16,
+                                        child: Column(
+                                          children: [
+                                            Image.network(
+                                              _items[position]["subjects"]
+                                                  [index]["subject_image"],
+                                              fit: BoxFit.fill,
+                                              height: 140,
+                                              width: 140,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Checkbox(
+                                                  value: isChecked,
+                                                  onChanged: (bool? value) {
+                                                    setState(() {
+                                                      isChecked = value!;
+                                                    });
+                                                  },
+                                                ),
+                                                Text(_items[position]
+                                                        ["subjects"][index]
+                                                    ["subject_name"]),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    itemCount:
+                                        _items[position]["subjects"].length,
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                    itemCount: _items.length,
+                  )),
+                ],
+              ),
             ),
           ),
-        )),
+        ),
       ),
     );
   }
