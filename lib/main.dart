@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -141,8 +142,8 @@ class _MyHomePageState extends State<MyHomePage> {
           itemBuilder: (context, classIndex) {
             return Column(
               children: [
-                AspectRatio(
-                  aspectRatio: 1,
+                SizedBox(
+                  height: 260,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -232,7 +233,8 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class SelectSubjectsAndClasses extends StatelessWidget {
-  const SelectSubjectsAndClasses({Key? key, required this.selectedItems}) : super(key: key);
+  const SelectSubjectsAndClasses({Key? key, required this.selectedItems})
+      : super(key: key);
   final Map<String, List<String>> selectedItems;
 
   String getSubject(int index) {
@@ -312,7 +314,7 @@ class SelectSubjectsAndClasses extends StatelessWidget {
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
-                          )
+                          ),
                         ],
                       ),
                     ),
