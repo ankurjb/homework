@@ -32,7 +32,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List _items = [];
-  bool isChecked = false;
+
+  // TODO optimise this
+  List selected = List.generate(
+      50, (i) => List.filled(50, false, growable: false),
+      growable: false);
+
+  final List<String> _selectedItems = [];
+
+  bool _isButtonDisabled = true;
 
   // Fetch content from the json file
   Future<void> readJson() async {
@@ -52,10 +60,20 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+      floatingActionButton: ElevatedButton(
+        onPressed: _isButtonDisabled ? null : () {},
+        child: const Text('SUBMIT'),
+      ) /*FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      SecondRoute(selectedItems: _selectedItems)));
+        },
         label: const Text('SUBMIT'),
-      ),
+      )*/
+      ,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Scaffold(
         body: SafeArea(
@@ -129,14 +147,30 @@ class _MyHomePageState extends State<MyHomePage> {
                                               width: 140,
                                             ),
                                             Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
                                               children: [
                                                 Checkbox(
-                                                  value: isChecked,
+                                                  value: selected[position]
+                                                      [index],
                                                   onChanged: (bool? value) {
                                                     setState(() {
-                                                      isChecked = value!;
+                                                      selected[position]
+                                                          [index] = value!;
+                                                      _isButtonDisabled =
+                                                          _selectedItems
+                                                              .isNotEmpty;
+                                                      if (value) {
+                                                        _selectedItems.add(_items[
+                                                                        position]
+                                                                    ["subjects"]
+                                                                [index]
+                                                            ["subject_name"]);
+                                                      } else {
+                                                        _selectedItems.remove(
+                                                            _items[position][
+                                                                        "subjects"]
+                                                                    [index][
+                                                                "subject_name"]);
+                                                      }
                                                     });
                                                   },
                                                 ),
@@ -168,6 +202,27 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class SecondRoute extends StatelessWidget {
+  const SecondRoute({Key? key, required this.selectedItems}) : super(key: key);
+  final List<String> selectedItems;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Second Route'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(selectedItems.first + selectedItems.last)),
       ),
     );
   }
