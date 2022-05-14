@@ -81,6 +81,100 @@ class _MyHomePageState extends State<MyHomePage> {
   String getSubjectImage(int classIndex, int subjectIndex) =>
       _items[classIndex]["subjects"][subjectIndex]["subject_image"];
 
+  Widget getHeader(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Teacher profile',
+            style: Theme.of(context).textTheme.headline5,
+          ),
+          const Padding(padding: EdgeInsets.only(top: 12)),
+          Text(
+            'Which grades & subjects you teach',
+            style: Theme.of(context).textTheme.headline4,
+          ),
+        ],
+      );
+
+  Widget getSubjectList(BuildContext context, int classIndex) => SizedBox(
+        height: 200,
+        child: ListView.builder(
+          itemBuilder: (context, subjectIndex) {
+            return Card(
+              elevation: 16,
+              child: Column(
+                children: [
+                  Image.network(
+                    getSubjectImage(classIndex, subjectIndex),
+                    fit: BoxFit.fill,
+                    height: 140,
+                    width: 140,
+                  ),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: selected[classIndex][subjectIndex],
+                        onChanged: (bool? value) {
+                          setState(() {
+                            modifySubject(value!, classIndex, subjectIndex);
+                          });
+                        },
+                      ),
+                      Text(
+                        getSubjectName(classIndex, subjectIndex),
+                      ),
+                      const Padding(padding: EdgeInsets.only(right: 8))
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+          itemCount: _items[classIndex]["subjects"].length,
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+        ),
+      );
+
+  Widget getSubjectAndClassesList(BuildContext context) => Expanded(
+        child: ListView.builder(
+          itemBuilder: (context, classIndex) {
+            return Column(
+              children: [
+                AspectRatio(
+                  aspectRatio: 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox.square(
+                        dimension: 50,
+                        child: Card(
+                          color: Colors.black87,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                getClassesName(classIndex),
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      getSubjectList(context, classIndex)
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+          itemCount: _items.length,
+        ),
+      );
+
   @override
   void initState() {
     super.initState();
@@ -119,111 +213,14 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.white,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
+                children: [
                   Padding(
                     padding: const EdgeInsets.all(12),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Teacher profile',
-                          style: Theme.of(context).textTheme.headline5,
-                        ),
-                        const Padding(padding: EdgeInsets.only(top: 12)),
-                        Text(
-                          'Which grades & subjects you teach',
-                          style: Theme.of(context).textTheme.headline4,
-                        ),
-                      ],
-                    ),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [getHeader(context)]),
                   ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemBuilder: (context, classIndex) {
-                        return Column(
-                          children: [
-                            AspectRatio(
-                              aspectRatio: 1,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox.square(
-                                    dimension: 50,
-                                    child: Card(
-                                      color: Colors.black87,
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            getClassesName(classIndex),
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 200,
-                                    child: ListView.builder(
-                                      itemBuilder: (context, subjectIndex) {
-                                        return Card(
-                                          elevation: 16,
-                                          child: Column(
-                                            children: [
-                                              Image.network(
-                                                getSubjectImage(
-                                                    classIndex, subjectIndex),
-                                                fit: BoxFit.fill,
-                                                height: 140,
-                                                width: 140,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Checkbox(
-                                                    value: selected[classIndex]
-                                                        [subjectIndex],
-                                                    onChanged: (bool? value) {
-                                                      setState(() {
-                                                        modifySubject(
-                                                            value!,
-                                                            classIndex,
-                                                            subjectIndex);
-                                                      });
-                                                    },
-                                                  ),
-                                                  Text(
-                                                    getSubjectName(classIndex,
-                                                        subjectIndex),
-                                                  ),
-                                                  const Padding(
-                                                      padding: EdgeInsets.only(
-                                                          right: 8))
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                      itemCount:
-                                          _items[classIndex]["subjects"].length,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                      itemCount: _items.length,
-                    ),
-                  ),
+                  getSubjectAndClassesList(context)
                 ],
               ),
             ),
