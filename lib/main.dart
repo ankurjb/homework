@@ -61,19 +61,17 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: ElevatedButton(
-        onPressed: _isButtonDisabled ? null : () {},
+        onPressed: _isButtonDisabled
+            ? null
+            : () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            SecondRoute(selectedItems: _selectedItems)));
+              },
         child: const Text('SUBMIT'),
-      ) /*FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SecondRoute(selectedItems: _selectedItems)));
-        },
-        label: const Text('SUBMIT'),
-      )*/
-      ,
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Scaffold(
         body: SafeArea(
