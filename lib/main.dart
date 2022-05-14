@@ -193,7 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SecondRoute(
+                          builder: (context) => SelectSubjectsAndClasses(
                               selectedItems: _selectedClassesWithSubject)));
                 },
           child: const Text(
@@ -231,8 +231,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class SecondRoute extends StatelessWidget {
-  const SecondRoute({Key? key, required this.selectedItems}) : super(key: key);
+class SelectSubjectsAndClasses extends StatelessWidget {
+  const SelectSubjectsAndClasses({Key? key, required this.selectedItems}) : super(key: key);
   final Map<String, List<String>> selectedItems;
 
   String getSubject(int index) {
