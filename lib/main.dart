@@ -52,11 +52,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void modifySubject(bool isSelected, int classIndex, int subjectIndex) {
-    String subject =
-        _items[classIndex]["subjects"][subjectIndex]["subject_name"];
-    String classes = _items[classIndex]["standard"];
+    String subject = getSubjectName(classIndex, subjectIndex);
+    String classes = getClassesName(classIndex);
     List<String>? subjectInSpecificClass =
         _selectedClassesWithSubject[classes] ?? [];
+
+    selected[classIndex][subjectIndex] = isSelected;
 
     if (isSelected) {
       subjectInSpecificClass.add(subject);
@@ -188,11 +189,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                                         [subjectIndex],
                                                     onChanged: (bool? value) {
                                                       setState(() {
-                                                        selected[classIndex]
-                                                                [subjectIndex] =
-                                                            value!;
                                                         modifySubject(
-                                                            value,
+                                                            value!,
                                                             classIndex,
                                                             subjectIndex);
                                                       });
