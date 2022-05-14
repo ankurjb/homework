@@ -140,36 +140,40 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget getSubjectAndClassesList(BuildContext context) => Expanded(
         child: ListView.builder(
           itemBuilder: (context, classIndex) {
-            return Column(
-              children: [
-                SizedBox(
-                  height: 260,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox.square(
-                        dimension: 50,
-                        child: Card(
-                          color: Colors.black87,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                getClassesName(classIndex),
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
+            return Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 260,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox.square(
+                          dimension: 50,
+                          child: Card(
+                            color: Colors.black87,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  getClassesName(classIndex),
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      getSubjectList(context, classIndex)
-                    ],
+                        const Padding(padding: EdgeInsets.only(top: 8)),
+                        getSubjectList(context, classIndex)
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           },
           itemCount: _items.length,
