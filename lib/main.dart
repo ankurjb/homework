@@ -200,6 +200,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     getSubjectName(classIndex,
                                                         subjectIndex),
                                                   ),
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          right: 8))
                                                 ],
                                               ),
                                             ],
@@ -270,57 +273,62 @@ class SecondRoute extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Welcome',
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-                const Padding(padding: EdgeInsets.only(top: 12)),
-                Text(
-                  'You teach these class and subjects',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return Card(
-                        child: Row(
-                          children: [
-                            SizedBox.square(
-                              dimension: 50,
-                              child: Card(
-                                color: Colors.black,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      getClass(index),
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const Padding(padding: EdgeInsets.only(left: 12)),
-                            Text(getSubject(index),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold))
-                          ],
-                        ),
-                      );
-                    },
-                    shrinkWrap: true,
-                    itemCount: selectedItems.length,
-                  ),
-                )
-              ],
+              children: [getHeader(context), getSubjectAndClasses(context)],
             ),
           ),
         ),
       ),
     );
   }
+
+  Widget getHeader(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Welcome',
+            style: Theme.of(context).textTheme.headline5,
+          ),
+          const Padding(padding: EdgeInsets.only(top: 12)),
+          Text(
+            'You teach these class and subjects',
+            style: Theme.of(context).textTheme.headline4,
+          )
+        ],
+      );
+
+  Widget getSubjectAndClasses(BuildContext context) => Expanded(
+        child: ListView.builder(
+          itemBuilder: (context, index) {
+            return Card(
+              child: Row(
+                children: [
+                  SizedBox.square(
+                    dimension: 50,
+                    child: Card(
+                      color: Colors.black,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            getClass(index),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsets.only(left: 12)),
+                  Text(getSubject(index),
+                      style: const TextStyle(fontWeight: FontWeight.bold))
+                ],
+              ),
+            );
+          },
+          shrinkWrap: true,
+          itemCount: selectedItems.length,
+        ),
+      );
 }
