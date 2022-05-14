@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 void main() {
@@ -138,44 +139,53 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget getSubjectAndClassesList(BuildContext context) => Expanded(
         child: ListView.builder(
+          itemCount: _items.length + 1,
           itemBuilder: (context, classIndex) {
-            return Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 260,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox.square(
-                          dimension: 50,
-                          child: Card(
-                            color: Colors.black87,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  getClassesName(classIndex),
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
+            if (classIndex == 0) {
+              return Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [getHeader(context)]),
+              );
+            } else {
+              return Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 260,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox.square(
+                            dimension: 50,
+                            child: Card(
+                              color: Colors.black87,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    getClassesName(classIndex - 1),
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        const Padding(padding: EdgeInsets.only(top: 8)),
-                        getSubjectList(context, classIndex)
-                      ],
+                          const Padding(padding: EdgeInsets.only(top: 8)),
+                          getSubjectList(context, classIndex - 1)
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
+                  ],
+                ),
+              );
+            }
           },
-          itemCount: _items.length,
         ),
       );
 
@@ -217,15 +227,7 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.white,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [getHeader(context)]),
-                  ),
-                  getSubjectAndClassesList(context)
-                ],
+                children: [getSubjectAndClassesList(context)],
               ),
             ),
           ),
@@ -334,3 +336,5 @@ class SelectSubjectsAndClasses extends StatelessWidget {
         ),
       );
 }
+
+//MediaQuery.of(context).size.height
