@@ -72,6 +72,14 @@ class _MyHomePageState extends State<MyHomePage> {
     _isButtonDisabled = _selectedClassesWithSubject.isEmpty;
   }
 
+  String getSubjectName(int classIndex, int subjectIndex) =>
+      _items[classIndex]["subjects"][subjectIndex]["subject_name"];
+
+  String getClassesName(int index) => _items[index]["standard"];
+
+  String getSubjectImage(int classIndex, int subjectIndex) =>
+      _items[classIndex]["subjects"][subjectIndex]["subject_image"];
+
   @override
   void initState() {
     super.initState();
@@ -129,87 +137,92 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   Expanded(
-                      child: ListView.builder(
-                    itemBuilder: (context, position) {
-                      return Column(
-                        children: [
-                          AspectRatio(
-                            aspectRatio: 1,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox.square(
-                                  dimension: 50,
-                                  child: Card(
-                                    color: Colors.black87,
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          _items[position]["standard"],
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      ],
+                    child: ListView.builder(
+                      itemBuilder: (context, classIndex) {
+                        return Column(
+                          children: [
+                            AspectRatio(
+                              aspectRatio: 1,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox.square(
+                                    dimension: 50,
+                                    child: Card(
+                                      color: Colors.black87,
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            getClassesName(classIndex),
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 200,
-                                  child: ListView.builder(
-                                    itemBuilder: (context, index) {
-                                      return Card(
-                                        elevation: 16,
-                                        child: Column(
-                                          children: [
-                                            Image.network(
-                                              _items[position]["subjects"]
-                                                  [index]["subject_image"],
-                                              fit: BoxFit.fill,
-                                              height: 140,
-                                              width: 140,
-                                            ),
-                                            Row(
-                                              children: [
-                                                Checkbox(
-                                                  value: selected[position]
-                                                      [index],
-                                                  onChanged: (bool? value) {
-                                                    setState(() {
-                                                      selected[position]
-                                                          [index] = value!;
-                                                      modifySubject(value,
-                                                          position, index);
-                                                    });
-                                                  },
-                                                ),
-                                                Text(_items[position]
-                                                        ["subjects"][index]
-                                                    ["subject_name"]),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                    itemCount:
-                                        _items[position]["subjects"].length,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                  ),
-                                )
-                              ],
+                                  SizedBox(
+                                    height: 200,
+                                    child: ListView.builder(
+                                      itemBuilder: (context, subjectIndex) {
+                                        return Card(
+                                          elevation: 16,
+                                          child: Column(
+                                            children: [
+                                              Image.network(
+                                                getSubjectImage(
+                                                    classIndex, subjectIndex),
+                                                fit: BoxFit.fill,
+                                                height: 140,
+                                                width: 140,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Checkbox(
+                                                    value: selected[classIndex]
+                                                        [subjectIndex],
+                                                    onChanged: (bool? value) {
+                                                      setState(() {
+                                                        selected[classIndex]
+                                                                [subjectIndex] =
+                                                            value!;
+                                                        modifySubject(
+                                                            value,
+                                                            classIndex,
+                                                            subjectIndex);
+                                                      });
+                                                    },
+                                                  ),
+                                                  Text(
+                                                    getSubjectName(classIndex,
+                                                        subjectIndex),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                      itemCount:
+                                          _items[classIndex]["subjects"].length,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      );
-                    },
-                    itemCount: _items.length,
-                  )),
+                          ],
+                        );
+                      },
+                      itemCount: _items.length,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -238,71 +251,78 @@ class SecondRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 5),
-          child: ElevatedButton(
-            onPressed: () {},
-            child: const Text(
-              'Continue',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 5),
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text(
+            'Thank You',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+          style:
+              ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Welcome',
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+                const Padding(padding: EdgeInsets.only(top: 12)),
+                Text(
+                  'You teach these class and subjects',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: Row(
+                          children: [
+                            SizedBox.square(
+                              dimension: 50,
+                              child: Card(
+                                color: Colors.black,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      getClass(index),
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const Padding(padding: EdgeInsets.only(left: 12)),
+                            Text(getSubject(index),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold))
+                          ],
+                        ),
+                      );
+                    },
+                    shrinkWrap: true,
+                    itemCount: selectedItems.length,
+                  ),
+                )
+              ],
             ),
-            style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(50)),
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        body: Scaffold(
-            body: SafeArea(
-                child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Welcome',
-                style: Theme.of(context).textTheme.headline5,
-              ),
-              const Padding(padding: EdgeInsets.only(top: 12)),
-              Text(
-                'You teach these class and subjects',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-              Expanded(
-                  child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: Row(
-                      children: [
-                        SizedBox.square(
-                          dimension: 50,
-                          child: Card(
-                            color: Colors.black,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  getClass(index),
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        const Padding(padding: EdgeInsets.only(left: 12)),
-                        Text(getSubject(index),
-                            style: const TextStyle(fontWeight: FontWeight.bold))
-                      ],
-                    ),
-                  );
-                },
-                shrinkWrap: true,
-                itemCount: selectedItems.length,
-              ))
-            ],
-          ),
-        ))));
+      ),
+    );
   }
 }
